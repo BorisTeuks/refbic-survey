@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ReFBiC Men's Ministry Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a3a5c;
+  --navy-deep: #0f2540;
+  --gold: #c9933a;
+  --cream: #faf8f4;
+  --cream-dark: #f0ece3;
+  --text: #1a1a1a;
+  --text-muted: #6b6560;
+  --white: #ffffff;
+  --border: rgba(26,58,92,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; font-size: 16px; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+.hero {
+  background: var(--navy-deep); padding: 2.5rem 1.5rem 2rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; border: 40px solid rgba(201,147,58,0.08); }
+.hero::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 150px; height: 150px; border-radius: 50%; border: 30px solid rgba(201,147,58,0.06); }
+.hero-org { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 6px; }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 300; }
+
+/* CODE SCREEN */
+.code-wrap { padding: 2rem 1.5rem; }
+.code-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem 1.5rem; margin-bottom: 1rem; }
+.code-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(201,147,58,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 24px; }
+.code-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-deep); text-align: center; margin-bottom: 8px; }
+.code-desc { font-size: 13px; color: var(--text-muted); text-align: center; line-height: 1.7; margin-bottom: 1.5rem; font-weight: 300; }
+.code-input { width: 100%; border: 2px solid var(--border); border-radius: 12px; padding: 16px 20px; font-size: 20px; font-family: 'DM Sans', sans-serif; color: var(--navy); background: var(--cream); text-align: center; letter-spacing: 0.15em; font-weight: 500; text-transform: uppercase; transition: border-color 0.2s; margin-bottom: 12px; }
+.code-input:focus { outline: none; border-color: var(--navy); background: var(--white); }
+.code-input::placeholder { font-size: 14px; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 300; }
+.code-input.error { border-color: #c0392b; background: rgba(192,57,43,0.04); }
+.code-input.success { border-color: #2d6a4f; background: rgba(45,106,79,0.04); }
+.code-err { font-size: 13px; color: #c0392b; text-align: center; margin-bottom: 12px; min-height: 18px; }
+.code-btn { width: 100%; background: var(--navy); border: none; border-radius: 50px; padding: 16px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--white); cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.code-btn:active { transform: scale(0.98); }
+.code-btn:hover { background: var(--navy-deep); }
+.code-btn:disabled { background: #aaa; cursor: not-allowed; }
+.code-note { background: rgba(201,147,58,0.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+/* ALREADY USED */
+.used-wrap { padding: 3rem 1.5rem; text-align: center; }
+.used-icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(201,147,58,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 32px; }
+.used-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-deep); margin-bottom: 10px; }
+.used-code { display: inline-block; background: var(--navy); color: var(--white); border-radius: 20px; padding: 4px 16px; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; margin: 12px 0; }
+.used-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; margin: 0 auto; font-weight: 300; }
+
+/* PROGRESS */
+.progress-wrap { background: var(--cream-dark); padding: 14px 1.5rem 0; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); }
+.progress-track { height: 3px; background: rgba(26,58,92,0.12); border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--navy), var(--gold)); border-radius: 2px; transition: width 0.4s ease; }
+.progress-label { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; padding-bottom: 10px; }
+
+.notice { margin: 1.25rem 1.5rem; padding: 14px 16px; background: rgba(201,147,58,0.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* STEPS */
+.step { display: none; animation: fadeUp 0.35s ease; }
+.step.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.q-wrap { padding: 1.5rem 1.5rem 1rem; }
+.q-num { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+.q-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--navy-deep); line-height: 1.35; margin-bottom: 6px; }
+.q-hint { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 300; margin-bottom: 6px; }
+.q-push { font-size: 12px; color: var(--gold); font-weight: 500; font-style: italic; margin-bottom: 18px; }
+
+textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); resize: none; min-height: 130px; line-height: 1.6; transition: border-color 0.2s; -webkit-appearance: none; }
+textarea:focus { outline: none; border-color: var(--navy); }
+textarea.short { min-height: 70px; }
+
+.hobby-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.hobby-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; transition: border-color 0.2s; }
+.hobby-box:focus-within { border-color: var(--navy); }
+.hobby-box label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+.hobby-box input { width: 100%; border: none; background: transparent; font-size: 16px; font-family: 'DM Sans', sans-serif; color: var(--text); padding: 0; }
+.hobby-box input:focus { outline: none; }
+.hobby-box input::placeholder { color: var(--text-muted); font-weight: 300; }
+
+.options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.option-item { display: flex; align-items: flex-start; gap: 12px; background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.option-item.selected { border-color: var(--navy); background: rgba(26,58,92,0.04); }
+.option-item input[type="checkbox"], .option-item input[type="radio"] { display: none; }
+.custom-check { width: 20px; height: 20px; min-width: 20px; border: 1.5px solid var(--border); border-radius: 5px; background: var(--white); display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 1px; }
+.custom-radio { border-radius: 50%; }
+.option-item.selected .custom-check { background: var(--navy); border-color: var(--navy); }
+.custom-check::after { content: ''; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); display: none; }
+.option-item.selected .custom-check::after { display: block; }
+.option-item.selected .custom-radio::after { width: 8px; height: 8px; border: none; background: white; border-radius: 50%; transform: none; display: block; }
+.option-label { font-size: 15px; color: var(--text); line-height: 1.4; padding-top: 1px; }
+.option-item.selected .option-label { color: var(--navy); font-weight: 500; }
+.select-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+.other-box { margin-top: 8px; display: none; }
+.other-box.visible { display: block; }
+
+.name-reveal { display: none; margin-top: 16px; animation: fadeUp 0.3s ease; }
+.name-reveal.visible { display: block; }
+.name-label { font-size: 13px; color: var(--navy); font-weight: 500; margin-bottom: 8px; }
+.name-input { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); transition: border-color 0.2s; }
+.name-input:focus { outline: none; border-color: var(--navy); }
+
+.nav-row { display: flex; gap: 10px; padding: 1rem 1.5rem 2rem; }
+.btn-back { flex: 0 0 auto; background: transparent; border: 1.5px solid var(--border); border-radius: 50px; padding: 14px 22px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text-muted); cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.btn-back:hover { border-color: var(--navy); color: var(--navy); }
+.btn-next { flex: 1; background: var(--navy); border: none; border-radius: 50px; padding: 16px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--white); cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.btn-next:active { transform: scale(0.98); }
+.btn-next:hover { background: var(--navy-deep); }
+.btn-next.gold { background: var(--gold); }
+.btn-next.gold:hover { background: #b8832e; }
+.btn-next:disabled { background: #aaa; cursor: not-allowed; }
+
+.skip-row { text-align: center; padding: 0 1.5rem 0.5rem; }
+.skip-link { font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-weight: 300; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+
+/* SUCCESS */
+.success-wrap { padding: 3rem 1.5rem; text-align: center; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(45,106,79,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 32px; }
+.success-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--navy-deep); margin-bottom: 12px; }
+.success-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; margin: 0 auto; font-weight: 300; }
+.scripture { margin-top: 2.5rem; padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); font-style: italic; font-size: 13px; color: var(--text-muted); text-align: center; line-height: 1.7; }
+
+/* ADMIN */
+.admin-btn-wrap { padding: 1rem 1.5rem 0.5rem; text-align: center; }
+.admin-link { font-size: 12px; color: rgba(26,58,92,0.25); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 8px; }
+.admin-link:hover { color: var(--navy); }
+.admin-wrap { padding: 1.5rem; }
+.admin-login h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy-deep); margin-bottom: 6px; }
+.admin-login p { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.input-row { display: flex; gap: 8px; }
+.input-row input { flex: 1; border: 1.5px solid var(--border); border-radius: 50px; padding: 12px 18px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); }
+.input-row input:focus { outline: none; border-color: var(--navy); }
+.input-row button { background: var(--navy); border: none; border-radius: 50px; padding: 12px 20px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--white); cursor: pointer; }
+.pw-err { font-size: 12px; color: #c0392b; margin-top: 8px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--navy); font-weight: 600; }
+.stat-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+.section-head { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-top: 1.5rem; }
+.resp-block { margin-bottom: 1.5rem; }
+.resp-item { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; font-size: 14px; color: var(--text); line-height: 1.6; }
+.resp-meta { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.04em; }
+.hobby-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.hobby-tag { background: rgba(26,58,92,0.08); color: var(--navy); border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 500; }
+.no-resp { font-size: 13px; color: var(--text-muted); font-style: italic; padding: 8px 0; }
+
+.tracker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px; }
+.tracker-pill { text-align: center; border-radius: 20px; padding: 5px 4px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; border: 1px solid var(--border); }
+.tracker-pill.done { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.tracker-pill.pending { background: var(--white); color: var(--text-muted); }
+
+.loading-msg { text-align: center; padding: 1.5rem; font-size: 14px; color: var(--text-muted); }
+.spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.clear-btn { width: 100%; background: transparent; border: 1.5px solid rgba(192,57,43,0.3); border-radius: 50px; padding: 12px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: #c0392b; cursor: pointer; margin-top: 1.5rem; }
+.back-survey-btn { display: block; text-align: center; font-size: 13px; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 1rem; width: 100%; text-decoration: underline; }
+.refresh-btn { background: transparent; border: 1.5px solid var(--border); border-radius: 50px; padding: 8px 18px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--navy); cursor: pointer; }
+</style>
+</head>
+<body>
+
+<!-- ===== CODE ENTRY ===== -->
+<div id="view-code" class="view active">
+  <div class="hero">
+    <div class="hero-org">ReFBiC</div>
+    <div class="hero-title">Men's Ministry</div>
+    <div class="hero-sub">Anonymous Survey</div>
+  </div>
+  <div class="code-wrap">
+    <div class="code-card">
+      <div class="code-icon">🔑</div>
+      <div class="code-title">Enter your personal code</div>
+      <div class="code-desc">You received a unique code from the leadership team. Enter it below to access the survey.</div>
+      <input type="text" class="code-input" id="code-input" placeholder="e.g. RFB-01" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')validateCode()" oninput="this.value=this.value.toUpperCase()">
+      <div class="code-err" id="code-err"></div>
+      <button class="code-btn" onclick="validateCode()" id="code-btn">Continue to survey</button>
+    </div>
+    <div class="code-note">Your code was given to you personally by the men's ministry leadership. If you have lost it, please contact the interim leader.</div>
+  </div>
+  <div class="admin-btn-wrap">
+    <button class="admin-link" onclick="showView('view-admin')">Admin</button>
+  </div>
+  <div class="scripture">"As iron sharpens iron, so one person sharpens another."<br>— Proverbs 27:17</div>
+</div>
+
+<!-- ===== ALREADY USED ===== -->
+<div id="view-used" class="view">
+  <div class="hero" style="padding:2rem 1.5rem 1.5rem">
+    <div class="hero-org">ReFBiC</div>
+    <div class="hero-title">Men's Ministry</div>
+  </div>
+  <div class="used-wrap">
+    <div class="used-icon">⚠️</div>
+    <div class="used-title">Already submitted</div>
+    <div class="used-code" id="used-code-display"></div>
+    <div class="used-text">This code has already been used to submit a response. Each code can only be used once. If you believe this is an error, please contact the interim leader.</div>
+  </div>
+  <div class="scripture">"As iron sharpens iron, so one person sharpens another."<br>— Proverbs 27:17</div>
+</div>
+
+<!-- ===== SURVEY ===== -->
+<div id="view-survey" class="view">
+  <div class="hero">
+    <div class="hero-org">ReFBiC</div>
+    <div class="hero-title">Men's Ministry</div>
+    <div class="hero-sub">Anonymous Survey</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:11%"></div></div>
+    <div class="progress-label" id="progress-label">Question 1 of 9</div>
+  </div>
+  <div class="notice">This survey is completely anonymous. Your code is only used to prevent duplicates — it is never linked to your answers.</div>
+
+  <!-- Q1 -->
+  <div class="step active" id="step-1">
+    <div class="q-wrap">
+      <div class="q-num">Question 1 of 9</div>
+      <div class="q-text">What do you need most as a man right now?</div>
+      <div class="q-hint">Be as honest as you like — spiritually, emotionally, practically.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a1" placeholder="e.g. More accountability, deeper friendships, direction in my career..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row"><button class="btn-next" onclick="goNext()">Next</button></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="step" id="step-2">
+    <div class="q-wrap">
+      <div class="q-num">Question 2 of 9</div>
+      <div class="q-text">What would make you consistently show up to a men's gathering?</div>
+      <div class="q-hint">Think about timing, format, topics, activities — whatever would make it worth your while.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a2" placeholder="e.g. Early morning, practical topics, food, relevant discussions..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="step" id="step-3">
+    <div class="q-wrap">
+      <div class="q-num">Question 3 of 9</div>
+      <div class="q-text">What has worked or NOT worked in past men's gatherings?</div>
+      <div class="q-hint">This helps us avoid old mistakes and build on what was good.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a3" placeholder="e.g. Liked the breakfasts, didn't like long sermons, needed more interaction..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="step" id="step-4">
+    <div class="q-wrap">
+      <div class="q-num">Question 4 of 9</div>
+      <div class="q-text">What are 3 hobbies that help you decompress and recharge?</div>
+      <div class="q-hint">We want to plan activities around what men in this church actually enjoy.</div>
+      <div class="hobby-grid">
+        <div class="hobby-box"><label>Hobby 1</label><input type="text" id="h1" placeholder="e.g. Football"></div>
+        <div class="hobby-box"><label>Hobby 2</label><input type="text" id="h2" placeholder="e.g. Fishing"></div>
+        <div class="hobby-box"><label>Hobby 3</label><input type="text" id="h3" placeholder="e.g. Reading"></div>
+      </div>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="step" id="step-5">
+    <div class="q-wrap">
+      <div class="q-num">Question 5 of 9</div>
+      <div class="q-text">What would make this men's ministry LAST long-term?</div>
+      <div class="q-hint">Think about what has kept other groups or communities alive and growing.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a5" placeholder="e.g. Consistent leadership, prayer, variety of activities, real brotherhood..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="step" id="step-6">
+    <div class="q-wrap">
+      <div class="q-num">Question 6 of 9</div>
+      <div class="q-text">What could cause this ministry to FAIL or fall apart?</div>
+      <div class="q-hint">Be honest. Your concerns help us build safeguards from the start.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a6" placeholder="e.g. Lack of follow-through, favouritism, poor communication, no clear vision..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="step" id="step-7">
+    <div class="q-wrap">
+      <div class="q-num">Question 7 of 9</div>
+      <div class="q-text">Is there anything else you want leadership to know?</div>
+      <div class="q-hint">A hope, a concern, a suggestion, or a prayer request — anything at all.</div>
+      <div class="q-push">Please give at least 3 answers.</div>
+      <textarea id="a7" placeholder="e.g. I hope we can..., I'm concerned about..., I'd love to see..."></textarea>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="step" id="step-8">
+    <div class="q-wrap">
+      <div class="q-num">Question 8 of 9</div>
+      <div class="q-text">Why do you think this men's ministry should exist?</div>
+      <div class="q-hint">Select at least 2 options that resonate with you.</div>
+      <div class="select-hint">You can select multiple options.</div>
+      <div class="options-list" id="mission-options">
+        <label class="option-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="To build ReFBiC men">
+          <span class="custom-check"></span>
+          <span class="option-label">To build ReFBiC men</span>
+        </label>
+        <label class="option-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="To develop the next generation of leaders in ReFBiC">
+          <span class="custom-check"></span>
+          <span class="option-label">To develop the next generation of leaders in ReFBiC</span>
+        </label>
+        <label class="option-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="To support the ReFBiC vision">
+          <span class="custom-check"></span>
+          <span class="option-label">To support the ReFBiC vision</span>
+        </label>
+        <label class="option-item" onclick="toggleOther(this)">
+          <input type="checkbox" value="other">
+          <span class="custom-check"></span>
+          <span class="option-label">Other</span>
+        </label>
+      </div>
+      <div class="other-box" id="other-mission-box">
+        <textarea class="short" id="other-mission" placeholder="Please share your thoughts..."></textarea>
+      </div>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="step" id="step-9">
+    <div class="q-wrap">
+      <div class="q-num">Question 9 of 9</div>
+      <div class="q-text">Would you be open to being part of the men's ministry leadership team?</div>
+      <div class="q-hint">This is a small, committed group of men who will help shape and lead this ministry.</div>
+      <div class="options-list" id="leadership-options">
+        <label class="option-item" onclick="selectLeadership(this, false)">
+          <input type="radio" name="leadership" value="No, not at this time">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">No, not at this time</span>
+        </label>
+        <label class="option-item" onclick="selectLeadership(this, true)">
+          <input type="radio" name="leadership" value="Yes — I'm ready now">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">Yes — I'm ready now</span>
+        </label>
+        <label class="option-item" onclick="selectLeadership(this, true)">
+          <input type="radio" name="leadership" value="Yes — but in the future">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">Yes — but in the future</span>
+        </label>
+        <label class="option-item" onclick="selectLeadership(this, true)">
+          <input type="radio" name="leadership" value="Yes — let's start and see how it goes">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">Yes — let's start and see how it goes</span>
+        </label>
+      </div>
+      <div class="name-reveal" id="name-reveal">
+        <div class="name-label">You are welcome to leave your name so we can follow up with you.</div>
+        <input type="text" class="name-input" id="leader-name" placeholder="Your name (optional)">
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next gold" id="submit-btn" onclick="submitSurvey()">Submit anonymously</button>
+    </div>
+  </div>
+
+  <div class="scripture">"As iron sharpens iron, so one person sharpens another."<br>— Proverbs 27:17</div>
+</div>
+
+<!-- ===== SUCCESS ===== -->
+<div id="view-success" class="view">
+  <div class="hero" style="padding:2rem 1.5rem 1.5rem">
+    <div class="hero-org">ReFBiC</div>
+    <div class="hero-title">Men's Ministry</div>
+  </div>
+  <div class="success-wrap">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Thank you, brother.</div>
+    <div class="success-text">Your answers have been recorded anonymously. They will be shared back with the whole group and used to build this ministry around your real needs.</div>
+  </div>
+  <div class="scripture">"As iron sharpens iron, so one person sharpens another."<br>— Proverbs 27:17</div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div id="view-admin" class="view">
+  <div class="hero" style="padding:2rem 1.5rem 1.5rem">
+    <div class="hero-org">ReFBiC</div>
+    <div class="hero-title">Admin Dashboard</div>
+    <div class="hero-sub">Live survey responses</div>
+  </div>
+  <div class="admin-wrap">
+    <div id="admin-login">
+      <div class="admin-login">
+        <h2>Admin access</h2>
+        <p>Enter your password to view all responses.</p>
+        <div class="input-row">
+          <input type="password" id="admin-pw" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+          <button onclick="checkPw()">Enter</button>
+        </div>
+        <div class="pw-err" id="pw-err"></div>
+      </div>
+    </div>
+    <div id="admin-dashboard" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <div class="stat-row" style="flex:1;margin-bottom:0">
+          <div class="stat-card"><div class="stat-num" id="s-total">—</div><div class="stat-lbl">Responses</div></div>
+          <div class="stat-card"><div class="stat-num" id="s-leaders">—</div><div class="stat-lbl">Potential leaders</div></div>
+          <div class="stat-card"><div class="stat-num" id="s-pct">—</div><div class="stat-lbl">of 50 codes</div></div>
+        </div>
+      </div>
+      <div style="text-align:right;margin-bottom:1rem">
+        <button class="refresh-btn" onclick="loadDashboard()">Refresh responses</button>
+      </div>
+      <div id="dash-loading" class="loading-msg" style="display:none">
+        <div class="spinner"></div>Loading responses from server...
+      </div>
+      <div id="dash-content"></div>
+      <button class="clear-btn" onclick="clearAll()">Delete all responses</button>
+    </div>
+  </div>
+  <button class="back-survey-btn" onclick="showView('view-code')">Back to survey</button>
+</div>
+
+<script>
+const BIN_ID = '69e69119aaba8821971d5224';
+const API_KEY = '$2a$10$pDylAIvAnVh.NVWREzoB8.oSUuDfiB7dSUoPjUwlk3IZBd4W7a6Si';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const ADMIN_PASS = 'refbic2024';
+
+const VALID_CODES = [
+  'RFB-01','RFB-02','RFB-03','RFB-04','RFB-05','RFB-06','RFB-07','RFB-08','RFB-09','RFB-10',
+  'RFB-11','RFB-12','RFB-13','RFB-14','RFB-15','RFB-16','RFB-17','RFB-18','RFB-19','RFB-20',
+  'RFB-21','RFB-22','RFB-23','RFB-24','RFB-25','RFB-26','RFB-27','RFB-28','RFB-29','RFB-30',
+  'RFB-31','RFB-32','RFB-33','RFB-34','RFB-35','RFB-36','RFB-37','RFB-38','RFB-39','RFB-40',
+  'RFB-41','RFB-42','RFB-43','RFB-44','RFB-45','RFB-46','RFB-47','RFB-48','RFB-49','RFB-50',
+];
+
+let currentStep = 1;
+const TOTAL_STEPS = 9;
+let activeCode = '';
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── JSONBin helpers ──
+async function getBin() {
+  const res = await fetch(BIN_URL + '/latest', {
+    headers: { 'X-Master-Key': API_KEY }
+  });
+  if (!res.ok) throw new Error('Failed to fetch data');
+  const json = await res.json();
+  return json.record;
+}
+
+async function putBin(data) {
+  const res = await fetch(BIN_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('Failed to save data');
+  return res.json();
+}
+
+// ── Code validation ──
+async function validateCode() {
+  const input = document.getElementById('code-input');
+  const errEl = document.getElementById('code-err');
+  const btn = document.getElementById('code-btn');
+  const code = input.value.trim().toUpperCase();
+
+  input.classList.remove('error', 'success');
+  errEl.textContent = '';
+
+  if (!code) { errEl.textContent = 'Please enter your personal code to continue.'; input.classList.add('error'); return; }
+  if (!VALID_CODES.includes(code)) { errEl.textContent = 'This code is not recognised. Please check and try again.'; input.classList.add('error'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
+
+  try {
+    const data = await getBin();
+    const usedCodes = data.usedCodes || [];
+
+    if (usedCodes.includes(code)) {
+      document.getElementById('used-code-display').textContent = code;
+      showView('view-used');
+      btn.disabled = false;
+      btn.textContent = 'Continue to survey';
+      return;
+    }
+
+    input.classList.add('success');
+    btn.textContent = 'Verified ✓';
+    activeCode = code;
+
+    setTimeout(() => {
+      currentStep = 1;
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById('step-1').classList.add('active');
+      updateProgress();
+      showView('view-survey');
+      btn.disabled = false;
+      btn.textContent = 'Continue to survey';
+      input.classList.remove('success');
+      input.value = '';
+    }, 700);
+
+  } catch(e) {
+    errEl.textContent = 'Connection error. Please check your internet and try again.';
+    input.classList.add('error');
+    btn.disabled = false;
+    btn.textContent = 'Continue to survey';
+  }
+}
+
+// ── Survey navigation ──
+function updateProgress() {
+  const pct = Math.round((currentStep / TOTAL_STEPS) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `Question ${currentStep} of ${TOTAL_STEPS}`;
+}
+
+function goNext() {
+  if (currentStep < TOTAL_STEPS) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function goBack() {
+  if (currentStep > 1) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('selected');
+  el.querySelector('input[type="checkbox"]').checked = el.classList.contains('selected');
+}
+
+function toggleOther(el) {
+  el.classList.toggle('selected');
+  const checked = el.classList.contains('selected');
+  el.querySelector('input[type="checkbox"]').checked = checked;
+  document.getElementById('other-mission-box').classList.toggle('visible', checked);
+}
+
+function selectLeadership(el, isYes) {
+  document.querySelectorAll('#leadership-options .option-item').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('name-reveal').classList.toggle('visible', isYes);
+}
+
+function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function getMissionSelections() {
+  const selected = [];
+  document.querySelectorAll('#mission-options .option-item.selected').forEach(el => {
+    const val = el.querySelector('input').value;
+    if (val !== 'other') selected.push(val);
+  });
+  const otherVal = getVal('other-mission');
+  if (otherVal) selected.push('Other: ' + otherVal);
+  return selected;
+}
+
+function getLeadership() {
+  const sel = document.querySelector('#leadership-options .option-item.selected');
+  return sel ? sel.querySelector('input').value : '';
+}
+
+// ── Submit survey ──
+async function submitSurvey() {
+  const btn = document.getElementById('submit-btn');
+  const entry = {
+    id: Date.now(),
+    code: activeCode,
+    ts: new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+    q1: getVal('a1'), q2: getVal('a2'), q3: getVal('a3'),
+    hobbies: [getVal('h1'), getVal('h2'), getVal('h3')].filter(Boolean),
+    q5: getVal('a5'), q6: getVal('a6'), q7: getVal('a7'),
+    mission: getMissionSelections(),
+    leadership: getLeadership(),
+    leaderName: getVal('leader-name'),
+  };
+
+  const hasContent = entry.q1||entry.q2||entry.q3||entry.hobbies.length||entry.q5||entry.q6||entry.q7||entry.mission.length||entry.leadership;
+  if (!hasContent) { alert('Please answer at least one question before submitting.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    const data = await getBin();
+    data.responses = data.responses || [];
+    data.usedCodes = data.usedCodes || [];
+    data.responses.push(entry);
+    if (!data.usedCodes.includes(activeCode)) data.usedCodes.push(activeCode);
+    await putBin(data);
+    showView('view-success');
+  } catch(e) {
+    alert('Could not save your response. Please check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Submit anonymously';
+  }
+}
+
+// ── Admin ──
+function checkPw() {
+  if (document.getElementById('admin-pw').value === ADMIN_PASS) {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = 'block';
+    loadDashboard();
+  } else {
+    document.getElementById('pw-err').textContent = 'Incorrect password. Please try again.';
+  }
+}
+
+async function loadDashboard() {
+  const loading = document.getElementById('dash-loading');
+  const content = document.getElementById('dash-content');
+  loading.style.display = 'block';
+  content.innerHTML = '';
+
+  try {
+    const data = await getBin();
+    const all = data.responses || [];
+    const used = data.usedCodes || [];
+    const leaders = all.filter(r => r.leadership && r.leadership.startsWith('Yes'));
+
+    document.getElementById('s-total').textContent = all.length;
+    document.getElementById('s-leaders').textContent = leaders.length;
+    document.getElementById('s-pct').textContent = Math.round((all.length / 50) * 100) + '%';
+
+    const sections = [
+      { key: 'q1', label: 'What they need most as a man' },
+      { key: 'q2', label: 'What would make them show up' },
+      { key: 'q3', label: 'What has worked or not worked' },
+      { key: 'hobbies', label: 'Hobbies & decompression activities', isHobby: true },
+      { key: 'q5', label: 'What would make the ministry last' },
+      { key: 'q6', label: 'What could make the ministry fail' },
+      { key: 'q7', label: 'Other thoughts for leadership' },
+      { key: 'mission', label: 'Why this ministry should exist', isMission: true },
+      { key: 'leadership', label: 'Open to leadership role', isLeadership: true },
+    ];
+
+    // Code tracker
+    let html = `<div class="section-head" style="margin-top:0">Code tracker</div>
+    <div class="tracker-grid">
+      ${VALID_CODES.map(c => `<div class="tracker-pill ${used.includes(c) ? 'done' : 'pending'}">${c}</div>`).join('')}
+    </div>`;
+
+    if (!all.length) {
+      html += '<p class="no-resp" style="margin-top:1.5rem">No responses yet. Share the link with the men to get started.</p>';
+    } else {
+      sections.forEach(s => {
+        html += `<div class="resp-block"><div class="section-head">${s.label}</div>`;
+        if (s.isHobby) {
+          const tags = all.flatMap(r => r.hobbies || []).filter(Boolean);
+          html += tags.length ? `<div class="hobby-tags">${tags.map(t => `<span class="hobby-tag">${t}</span>`).join('')}</div>` : '<p class="no-resp">No hobbies submitted yet.</p>';
+        } else if (s.isMission) {
+          const allSel = all.flatMap(r => r.mission || []).filter(Boolean);
+          html += allSel.length ? `<div class="hobby-tags">${allSel.map(t => `<span class="hobby-tag">${t}</span>`).join('')}</div>` : '<p class="no-resp">No selections yet.</p>';
+        } else if (s.isLeadership) {
+          const named = all.filter(r => r.leadership && r.leadership.startsWith('Yes') && r.leaderName);
+          const unnamed = all.filter(r => r.leadership && r.leadership.startsWith('Yes') && !r.leaderName);
+          const no = all.filter(r => r.leadership === 'No, not at this time');
+          if (!all.some(r => r.leadership)) {
+            html += '<p class="no-resp">No selections yet.</p>';
+          } else {
+            named.forEach(r => { html += `<div class="resp-item"><div class="resp-meta">${r.code} · ${r.ts}</div><strong>${r.leaderName}</strong> — ${r.leadership}</div>`; });
+            unnamed.forEach(r => { html += `<div class="resp-item"><div class="resp-meta">${r.code} · ${r.ts}</div>Anonymous — ${r.leadership}</div>`; });
+            if (no.length) html += `<div class="resp-item" style="opacity:0.6">${no.length} man/men said: Not at this time</div>`;
+          }
+        } else {
+          const answers = all.map(r => ({ val: r[s.key], ts: r.ts, code: r.code })).filter(a => a.val);
+          html += answers.length ? answers.map(a => `<div class="resp-item"><div class="resp-meta">${a.code} · ${a.ts}</div>${a.val}</div>`).join('') : '<p class="no-resp">No answers yet.</p>';
+        }
+        html += '</div>';
+      });
+    }
+
+    loading.style.display = 'none';
+    content.innerHTML = html;
+
+  } catch(e) {
+    loading.style.display = 'none';
+    content.innerHTML = '<p class="no-resp">Could not load responses. Check your connection and tap Refresh.</p>';
+  }
+}
+
+async function clearAll() {
+  if (confirm('This will permanently delete ALL responses and reset all used codes. Are you sure?')) {
+    try {
+      await putBin({ responses: [], usedCodes: [] });
+      loadDashboard();
+    } catch(e) {
+      alert('Could not clear data. Please try again.');
+    }
+  }
+}
+
+updateProgress();
+</script>
+</body>
+</html>
