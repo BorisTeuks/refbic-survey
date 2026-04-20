@@ -345,26 +345,22 @@ textarea.short { min-height: 70px; }
       <div class="q-hint">Select at least 2 options that resonate with you.</div>
       <div class="select-hint">You can select multiple options.</div>
       <div class="options-list" id="mission-options">
-        <label class="option-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="To build ReFBiC men">
+        <div class="option-item" onclick="toggleCheck(this)" data-value="To build ReFBiC men">
           <span class="custom-check"></span>
           <span class="option-label">To build ReFBiC men</span>
-        </label>
-        <label class="option-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="To develop the next generation of leaders in ReFBiC">
+        </div>
+        <div class="option-item" onclick="toggleCheck(this)" data-value="To develop the next generation of leaders in ReFBiC">
           <span class="custom-check"></span>
           <span class="option-label">To develop the next generation of leaders in ReFBiC</span>
-        </label>
-        <label class="option-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="To support the ReFBiC vision">
+        </div>
+        <div class="option-item" onclick="toggleCheck(this)" data-value="To support the ReFBiC vision">
           <span class="custom-check"></span>
           <span class="option-label">To support the ReFBiC vision</span>
-        </label>
-        <label class="option-item" onclick="toggleOther(this)">
-          <input type="checkbox" value="other">
+        </div>
+        <div class="option-item" onclick="toggleOther(this)" data-value="other">
           <span class="custom-check"></span>
           <span class="option-label">Other</span>
-        </label>
+        </div>
       </div>
       <div class="other-box" id="other-mission-box">
         <textarea class="short" id="other-mission" placeholder="Please share your thoughts..."></textarea>
@@ -598,13 +594,11 @@ function goBack() {
 
 function toggleCheck(el) {
   el.classList.toggle('selected');
-  el.querySelector('input[type="checkbox"]').checked = el.classList.contains('selected');
 }
 
 function toggleOther(el) {
   el.classList.toggle('selected');
   const checked = el.classList.contains('selected');
-  el.querySelector('input[type="checkbox"]').checked = checked;
   document.getElementById('other-mission-box').classList.toggle('visible', checked);
 }
 
@@ -619,7 +613,7 @@ function getVal(id) { const el = document.getElementById(id); return el ? el.val
 function getMissionSelections() {
   const selected = [];
   document.querySelectorAll('#mission-options .option-item.selected').forEach(el => {
-    const val = el.querySelector('input').value;
+    const val = el.getAttribute('data-value');
     if (val !== 'other') selected.push(val);
   });
   const otherVal = getVal('other-mission');
