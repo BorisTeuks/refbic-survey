@@ -168,6 +168,11 @@ textarea.short { min-height: 70px; }
 
 .clear-btn { width: 100%; background: transparent; border: 1.5px solid rgba(192,57,43,0.3); border-radius: 50px; padding: 12px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: #c0392b; cursor: pointer; margin-top: 1.5rem; }
 .back-survey-btn { display: block; text-align: center; font-size: 13px; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 1rem; width: 100%; text-decoration: underline; }
+.mopt { display:flex; align-items:center; gap:12px; width:100%; background:var(--white); border:1.5px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); text-align:left; transition:border-color 0.2s, background 0.2s; }
+.mopt.selected { border-color:var(--navy); background:rgba(26,58,92,0.04); color:var(--navy); font-weight:500; }
+.mcheck { width:20px; height:20px; min-width:20px; border:1.5px solid var(--border); border-radius:5px; background:var(--white); display:inline-flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
+.mopt.selected .mcheck { background:var(--navy); border-color:var(--navy); }
+.mopt.selected .mcheck::after { content:''; width:5px; height:9px; border:2px solid white; border-top:none; border-left:none; transform:rotate(45deg) translate(-1px,-1px); display:block; }
 .refresh-btn { background: transparent; border: 1.5px solid var(--border); border-radius: 50px; padding: 8px 18px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--navy); cursor: pointer; }
 </style>
 </head>
@@ -344,23 +349,19 @@ textarea.short { min-height: 70px; }
       <div class="q-text">Why do you think this men's ministry should exist?</div>
       <div class="q-hint">Select at least 2 options that resonate with you.</div>
       <div class="select-hint">You can select multiple options.</div>
-      <div class="options-list" id="mission-options">
-        <div class="option-item" onclick="toggleCheck(this)" data-value="To build ReFBiC men">
-          <span class="custom-check"></span>
-          <span class="option-label">To build ReFBiC men</span>
-        </div>
-        <div class="option-item" onclick="toggleCheck(this)" data-value="To develop the next generation of leaders in ReFBiC">
-          <span class="custom-check"></span>
-          <span class="option-label">To develop the next generation of leaders in ReFBiC</span>
-        </div>
-        <div class="option-item" onclick="toggleCheck(this)" data-value="To support the ReFBiC vision">
-          <span class="custom-check"></span>
-          <span class="option-label">To support the ReFBiC vision</span>
-        </div>
-        <div class="option-item" onclick="toggleOther(this)" data-value="other">
-          <span class="custom-check"></span>
-          <span class="option-label">Other</span>
-        </div>
+      <div id="mission-options" style="display:flex;flex-direction:column;gap:10px;">
+        <button type="button" class="mopt" data-value="To build ReFBiC men" onclick="toggleMission(this)">
+          <span class="mcheck"></span><span>To build ReFBiC men</span>
+        </button>
+        <button type="button" class="mopt" data-value="To develop the next generation of leaders in ReFBiC" onclick="toggleMission(this)">
+          <span class="mcheck"></span><span>To develop the next generation of leaders in ReFBiC</span>
+        </button>
+        <button type="button" class="mopt" data-value="To support the ReFBiC vision" onclick="toggleMission(this)">
+          <span class="mcheck"></span><span>To support the ReFBiC vision</span>
+        </button>
+        <button type="button" class="mopt" data-value="other" onclick="toggleMissionOther(this)">
+          <span class="mcheck"></span><span>Other</span>
+        </button>
       </div>
       <div class="other-box" id="other-mission-box">
         <textarea class="short" id="other-mission" placeholder="Please share your thoughts..."></textarea>
@@ -602,6 +603,15 @@ function toggleOther(el) {
   document.getElementById('other-mission-box').classList.toggle('visible', checked);
 }
 
+function toggleMission(el) {
+  el.classList.toggle('selected');
+}
+
+function toggleMissionOther(el) {
+  el.classList.toggle('selected');
+  document.getElementById('other-mission-box').classList.toggle('visible', el.classList.contains('selected'));
+}
+
 function selectLeadership(el, isYes) {
   document.querySelectorAll('#leadership-options .option-item').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
@@ -612,7 +622,7 @@ function getVal(id) { const el = document.getElementById(id); return el ? el.val
 
 function getMissionSelections() {
   const selected = [];
-  document.querySelectorAll('#mission-options .option-item.selected').forEach(el => {
+  document.querySelectorAll('#mission-options .mopt.selected').forEach(el => {
     const val = el.getAttribute('data-value');
     if (val !== 'other') selected.push(val);
   });
