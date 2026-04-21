@@ -190,7 +190,7 @@ textarea.short { min-height: 70px; }
       <div class="code-icon">🔑</div>
       <div class="code-title">Enter your personal code</div>
       <div class="code-desc">You received a unique code from the leadership team. Enter it below to access the survey.</div>
-      <input type="text" class="code-input" id="code-input" placeholder="e.g. RFB-01" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')validateCode()" oninput="this.value=this.value.toUpperCase()">
+      <input type="text" class="code-input" id="code-input" placeholder="e.g. RFB000" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')validateCode()" oninput="this.value=this.value.toUpperCase()">
       <div class="code-err" id="code-err"></div>
       <button class="code-btn" onclick="validateCode()" id="code-btn">Continue to survey</button>
     </div>
@@ -477,11 +477,57 @@ const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 const ADMIN_PASS = 'refbic2024';
 
 const VALID_CODES = [
-  'RFB-01','RFB-02','RFB-03','RFB-04','RFB-05','RFB-06','RFB-07','RFB-08','RFB-09','RFB-10',
-  'RFB-11','RFB-12','RFB-13','RFB-14','RFB-15','RFB-16','RFB-17','RFB-18','RFB-19','RFB-20',
-  'RFB-21','RFB-22','RFB-23','RFB-24','RFB-25','RFB-26','RFB-27','RFB-28','RFB-29','RFB-30',
-  'RFB-31','RFB-32','RFB-33','RFB-34','RFB-35','RFB-36','RFB-37','RFB-38','RFB-39','RFB-40',
-  'RFB-41','RFB-42','RFB-43','RFB-44','RFB-45','RFB-46','RFB-47','RFB-48','RFB-49','RFB-50',
+  'RFB000',
+  'RFB0FN',
+  'RFB0HL',
+  'RFB1ER',
+  'RFB1T2',
+  'RFB30T',
+  'RFB3A3',
+  'RFB3LC',
+  'RFB3W5',
+  'RFB4AZ',
+  'RFB58D',
+  'RFB5LX',
+  'RFB65K',
+  'RFB6DP',
+  'RFB8MD',
+  'RFB9NT',
+  'RFB9T8',
+  'RFB9XU',
+  'RFBA75',
+  'RFBAHX',
+  'RFBBHS',
+  'RFBD4V',
+  'RFBDW2',
+  'RFBHJ7',
+  'RFBI0Y',
+  'RFBIBL',
+  'RFBIDK',
+  'RFBIKC',
+  'RFBJH7',
+  'RFBJIU',
+  'RFBJSG',
+  'RFBJV6',
+  'RFBO6Q',
+  'RFBOH9',
+  'RFBPCN',
+  'RFBPHT',
+  'RFBQ85',
+  'RFBRC1',
+  'RFBSDB',
+  'RFBTAL',
+  'RFBTHV',
+  'RFBTJ5',
+  'RFBUZB',
+  'RFBWNN',
+  'RFBXAJ',
+  'RFBXEP',
+  'RFBXVF',
+  'RFBXVG',
+  'RFBY41',
+  'RFBYTJ',
+  'RFBZMF',
 ];
 
 let currentStep = 1;
