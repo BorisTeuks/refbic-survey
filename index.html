@@ -225,15 +225,18 @@ textarea.short { min-height: 70px; }
     <div class="hero-sub">Anonymous Survey</div>
   </div>
   <div class="progress-wrap">
-    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:11%"></div></div>
-    <div class="progress-label" id="progress-label">Question 1 of 9</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:10%"></div></div>
+    <div class="progress-label" id="progress-label">Question 1 of 10</div>
   </div>
   <div class="notice">This survey is completely anonymous. Your code is only used to prevent duplicates — it is never linked to your answers.</div>
+  <div id="resume-banner" style="display:none;margin:0 1.5rem 1rem;padding:12px 16px;background:rgba(45,106,79,0.08);border-left:3px solid #2d6a4f;border-radius:0 8px 8px 0;font-size:13px;color:#085041;line-height:1.6;">
+    Your previous answers have been restored. Continue from where you left off.
+  </div>
 
   <!-- Q1 -->
   <div class="step active" id="step-1">
     <div class="q-wrap">
-      <div class="q-num">Question 1 of 9</div>
+      <div class="q-num">Question 1 of 10</div>
       <div class="q-text">What do you need most as a man right now?</div>
       <div class="q-hint">Be as honest as you like — spiritually, emotionally, practically.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -246,7 +249,7 @@ textarea.short { min-height: 70px; }
   <!-- Q2 -->
   <div class="step" id="step-2">
     <div class="q-wrap">
-      <div class="q-num">Question 2 of 9</div>
+      <div class="q-num">Question 2 of 10</div>
       <div class="q-text">What would make you consistently show up to a men's gathering?</div>
       <div class="q-hint">Think about timing, format, topics, activities — whatever would make it worth your while.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -262,7 +265,7 @@ textarea.short { min-height: 70px; }
   <!-- Q3 -->
   <div class="step" id="step-3">
     <div class="q-wrap">
-      <div class="q-num">Question 3 of 9</div>
+      <div class="q-num">Question 3 of 10</div>
       <div class="q-text">What has worked or NOT worked in past men's gatherings?</div>
       <div class="q-hint">This helps us avoid old mistakes and build on what was good.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -278,7 +281,7 @@ textarea.short { min-height: 70px; }
   <!-- Q4 -->
   <div class="step" id="step-4">
     <div class="q-wrap">
-      <div class="q-num">Question 4 of 9</div>
+      <div class="q-num">Question 4 of 10</div>
       <div class="q-text">What are 3 hobbies that help you decompress and recharge?</div>
       <div class="q-hint">We want to plan activities around what men in this church actually enjoy.</div>
       <div class="hobby-grid">
@@ -297,7 +300,7 @@ textarea.short { min-height: 70px; }
   <!-- Q5 -->
   <div class="step" id="step-5">
     <div class="q-wrap">
-      <div class="q-num">Question 5 of 9</div>
+      <div class="q-num">Question 5 of 10</div>
       <div class="q-text">What would make this men's ministry LAST long-term?</div>
       <div class="q-hint">Think about what has kept other groups or communities alive and growing.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -313,7 +316,7 @@ textarea.short { min-height: 70px; }
   <!-- Q6 -->
   <div class="step" id="step-6">
     <div class="q-wrap">
-      <div class="q-num">Question 6 of 9</div>
+      <div class="q-num">Question 6 of 10</div>
       <div class="q-text">What could cause this ministry to FAIL or fall apart?</div>
       <div class="q-hint">Be honest. Your concerns help us build safeguards from the start.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -329,7 +332,7 @@ textarea.short { min-height: 70px; }
   <!-- Q7 -->
   <div class="step" id="step-7">
     <div class="q-wrap">
-      <div class="q-num">Question 7 of 9</div>
+      <div class="q-num">Question 7 of 10</div>
       <div class="q-text">Is there anything else you want leadership to know?</div>
       <div class="q-hint">A hope, a concern, a suggestion, or a prayer request — anything at all.</div>
       <div class="q-push">Please give at least 3 answers.</div>
@@ -342,10 +345,41 @@ textarea.short { min-height: 70px; }
     </div>
   </div>
 
-  <!-- Q8 -->
+  <!-- Q8 CONSTITUTION -->
   <div class="step" id="step-8">
     <div class="q-wrap">
-      <div class="q-num">Question 8 of 9</div>
+      <div class="q-num">Question 8 of 10</div>
+      <div class="q-text">Are you aware of the ReFBiC church constitution?</div>
+      <div class="q-hint">This helps us understand how familiar the men are with what we are all part of and supporting.</div>
+      <div class="options-list" id="constitution-options">
+        <label class="option-item" onclick="selectConstitution(this)">
+          <input type="radio" name="constitution" value="Yes, I am familiar with it">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">Yes, I am familiar with it</span>
+        </label>
+        <label class="option-item" onclick="selectConstitution(this)">
+          <input type="radio" name="constitution" value="I have heard of it but don't know the details">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">I have heard of it but don't know the details</span>
+        </label>
+        <label class="option-item" onclick="selectConstitution(this)">
+          <input type="radio" name="constitution" value="No, I have not read it">
+          <span class="custom-check custom-radio"></span>
+          <span class="option-label">No, I have not read it</span>
+        </label>
+      </div>
+    </div>
+    <div class="skip-row"><button class="skip-link" onclick="goNext()">Skip this question</button></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">Back</button>
+      <button class="btn-next" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- Q9 MISSION -->
+  <div class="step" id="step-9">
+    <div class="q-wrap">
+      <div class="q-num">Question 9 of 10</div>
       <div class="q-text">Why do you think this men's ministry should exist?</div>
       <div class="q-hint">Select at least 2 options that resonate with you.</div>
       <div class="select-hint">You can select multiple options.</div>
@@ -375,9 +409,9 @@ textarea.short { min-height: 70px; }
   </div>
 
   <!-- Q9 -->
-  <div class="step" id="step-9">
+  <div class="step" id="step-10">
     <div class="q-wrap">
-      <div class="q-num">Question 9 of 9</div>
+      <div class="q-num">Question 10 of 10</div>
       <div class="q-text">Would you be open to being part of the men's ministry leadership team?</div>
       <div class="q-hint">This is a small, committed group of men who will help shape and lead this ministry.</div>
       <div class="options-list" id="leadership-options">
@@ -531,7 +565,7 @@ const VALID_CODES = [
 ];
 
 let currentStep = 1;
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 10;
 let activeCode = '';
 
 function showView(id) {
@@ -620,6 +654,7 @@ function updateProgress() {
 }
 
 function goNext() {
+  autoSave();
   if (currentStep < TOTAL_STEPS) {
     document.getElementById('step-' + currentStep).classList.remove('active');
     currentStep++;
@@ -630,6 +665,7 @@ function goNext() {
 }
 
 function goBack() {
+  autoSave();
   if (currentStep > 1) {
     document.getElementById('step-' + currentStep).classList.remove('active');
     currentStep--;
@@ -658,6 +694,16 @@ function toggleMissionOther(el) {
   document.getElementById('other-mission-box').classList.toggle('visible', el.classList.contains('selected'));
 }
 
+function selectConstitution(el) {
+  document.querySelectorAll('#constitution-options .option-item').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function getConstitution() {
+  const sel = document.querySelector('#constitution-options .option-item.selected');
+  return sel ? sel.querySelector('input').value : '';
+}
+
 function selectLeadership(el, isYes) {
   document.querySelectorAll('#leadership-options .option-item').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
@@ -665,6 +711,85 @@ function selectLeadership(el, isYes) {
 }
 
 function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function autoSave() {
+  const draft = {
+    a1: getVal('a1'), a2: getVal('a2'), a3: getVal('a3'),
+    h1: getVal('h1'), h2: getVal('h2'), h3: getVal('h3'),
+    a5: getVal('a5'), a6: getVal('a6'), a7: getVal('a7'),
+    otherMission: getVal('other-mission'),
+    leaderName: getVal('leader-name'),
+    constitution: getConstitution(),
+    mission: getMissionSelections(),
+    leadership: getLeadership(),
+    step: currentStep,
+  };
+  try { localStorage.setItem('refbic_draft_' + activeCode, JSON.stringify(draft)); } catch(e) {}
+}
+
+function loadDraft(code) {
+  try {
+    const raw = localStorage.getItem('refbic_draft_' + code);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    const fields = ['a1','a2','a3','h1','h2','h3','a5','a6','a7','other-mission','leader-name'];
+    const fieldMap = {
+      'a1':'a1','a2':'a2','a3':'a3','h1':'h1','h2':'h2','h3':'h3',
+      'a5':'a5','a6':'a6','a7':'a7','other-mission':'otherMission','leader-name':'leaderName'
+    };
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      const key = fieldMap[id];
+      if (el && key && d[key]) el.value = d[key];
+    });
+    // Restore constitution
+    if (d.constitution) {
+      document.querySelectorAll('#constitution-options .option-item').forEach(el => {
+        const inp = el.querySelector('input');
+        if (inp && inp.value === d.constitution) { el.classList.add('selected'); }
+      });
+    }
+    // Restore mission
+    if (d.mission && d.mission.length) {
+      document.querySelectorAll('#mission-options .mopt').forEach(el => {
+        if (d.mission.includes(el.getAttribute('data-value'))) el.classList.add('selected');
+      });
+      if (d.mission.some(m => m.startsWith('Other:'))) {
+        const otherBtn = document.querySelector('#mission-options .mopt[data-value="other"]');
+        if (otherBtn) { otherBtn.classList.add('selected'); document.getElementById('other-mission-box').classList.add('visible'); }
+      }
+    }
+    // Restore leadership
+    if (d.leadership) {
+      document.querySelectorAll('#leadership-options .option-item').forEach(el => {
+        const inp = el.querySelector('input');
+        if (inp && inp.value === d.leadership) {
+          el.classList.add('selected');
+          const isYes = d.leadership.startsWith('Yes');
+          document.getElementById('name-reveal').classList.toggle('visible', isYes);
+        }
+      });
+    }
+    // Restore step
+    if (d.step && d.step > 1) {
+      document.getElementById('step-' + currentStep).classList.remove('active');
+      currentStep = d.step;
+      document.getElementById('step-' + currentStep).classList.add('active');
+      updateProgress();
+    }
+    // Show resume banner
+    showResumeBanner();
+  } catch(e) {}
+}
+
+function clearDraft() {
+  try { localStorage.removeItem('refbic_draft_' + activeCode); } catch(e) {}
+}
+
+function showResumeBanner() {
+  const banner = document.getElementById('resume-banner');
+  if (banner) banner.style.display = 'block';
+}
 
 function getMissionSelections() {
   const selected = [];
@@ -692,6 +817,7 @@ async function submitSurvey() {
     q1: getVal('a1'), q2: getVal('a2'), q3: getVal('a3'),
     hobbies: [getVal('h1'), getVal('h2'), getVal('h3')].filter(Boolean),
     q5: getVal('a5'), q6: getVal('a6'), q7: getVal('a7'),
+    constitution: getConstitution(),
     mission: getMissionSelections(),
     leadership: getLeadership(),
     leaderName: getVal('leader-name'),
@@ -710,6 +836,7 @@ async function submitSurvey() {
     data.responses.push(entry);
     if (!data.usedCodes.includes(activeCode)) data.usedCodes.push(activeCode);
     await putBin(data);
+    clearDraft();
     showView('view-success');
   } catch(e) {
     alert('Could not save your response. Please check your connection and try again.');
@@ -753,7 +880,8 @@ async function loadDashboard() {
       { key: 'q5', label: 'What would make the ministry last' },
       { key: 'q6', label: 'What could make the ministry fail' },
       { key: 'q7', label: 'Other thoughts for leadership' },
-      { key: 'mission', label: 'Why this ministry should exist', isMission: true },
+      { key: 'constitution', label: 'Awareness of church constitution', isConstitution: true },
+    { key: 'mission', label: 'Why this ministry should exist', isMission: true },
       { key: 'leadership', label: 'Open to leadership role', isLeadership: true },
     ];
 
@@ -771,7 +899,14 @@ async function loadDashboard() {
         if (s.isHobby) {
           const tags = all.flatMap(r => r.hobbies || []).filter(Boolean);
           html += tags.length ? `<div class="hobby-tags">${tags.map(t => `<span class="hobby-tag">${t}</span>`).join('')}</div>` : '<p class="no-resp">No hobbies submitted yet.</p>';
-        } else if (s.isMission) {
+        } else if (s.isConstitution) {
+        const opts = ['Yes, I am familiar with it', "I have heard of it but don't know the details", 'No, I have not read it'];
+        opts.forEach(opt => {
+          const count = all.filter(r => r.constitution === opt).length;
+          if (count > 0) html += `<div class="resp-item"><div class="resp-meta">${count} response${count>1?'s':''}</div>${opt}</div>`;
+        });
+        if (!all.some(r => r.constitution)) html += '<p class="no-resp">No selections yet.</p>';
+      } else if (s.isMission) {
           const allSel = all.flatMap(r => r.mission || []).filter(Boolean);
           html += allSel.length ? `<div class="hobby-tags">${allSel.map(t => `<span class="hobby-tag">${t}</span>`).join('')}</div>` : '<p class="no-resp">No selections yet.</p>';
         } else if (s.isLeadership) {
@@ -814,6 +949,12 @@ async function clearAll() {
 }
 
 updateProgress();
+
+// Auto-save on input
+['a1','a2','a3','h1','h2','h3','a5','a6','a7','other-mission','leader-name'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', autoSave);
+});
 </script>
 </body>
 </html>
